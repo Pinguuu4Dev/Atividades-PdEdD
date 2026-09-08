@@ -4,10 +4,8 @@
       "commandName": "WSL2",
       "distributionName": ""
     },
-    "Default": {
-      "commandName": "Project",
-      "commandLineArgs": "Atividade 01",
-      "workingDirectory": "D:\\Faculdade\\Prog_Estrutura_Dados\\Atividade 01\\bin\\Debug\\net10.0"
+    "Profile 1": {
+      "commandName": "Project"
     }
   }
 }

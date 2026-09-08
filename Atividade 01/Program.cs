@@ -1,73 +1,104 @@
 ﻿// Parte 1
 
-/* 
- * Em um estúdio hipotético, há uma lista de funcionários. Os dados desta lista estão contidos no arquivo "funcionarios.txt", 
- * no qual os PARES de linhas representam, respectivamente, o NOME e PAGAMENTO POR HORA trabalhada de cada funcionário.
-*/
-
-// Primeiro definimos o caminho que o programa deve seguir para conseguir o acesso as informações dos funcionários
 using Atividade_01;
 
 string func_path = "./funcionarios.txt";
 string[] func_info = File.ReadAllLines(func_path);
 
-Funcionarios[] lista_funcionarios = new Funcionarios[func_info.Length / 2];
-float[] lista_pagamentos = new float[func_info.Length / 2];
-string[] lista_nomes = new string[func_info.Length / 2];
-    
+List<Funcionarios> l_funcionarios = new List<Funcionarios>();
+List<float> l_pagamentos = new List<float>();
+List<string> l_nomes = new List<string>();
+
 for (int i = 0; i < func_info.Length; i += 2)
 {
     string nome = func_info[i];
     float pagamento = float.Parse(func_info[i + 1]);
-    lista_pagamentos[i / 2] = pagamento;
-    lista_nomes[i / 2] = nome;
+    l_pagamentos.Add(pagamento);
+    l_nomes.Add(nome);
 
-    lista_funcionarios[i / 2] = new Funcionarios(nome, pagamento);
+    l_funcionarios.Add(new Funcionarios(nome, pagamento));
 }
 
-/* 
- * Agora cumprimos os requisitos da atividade, sendo elas:
-*/
-
 // 1.Quantos funcionários tem o estúdio;
-Console.WriteLine("Número de funcionários é: " + lista_funcionarios.Length);
+Console.WriteLine("Número de funcionários é: " + l_funcionarios.Count);
 
 // 2. Qual é o NOME do funcionário com o MAIOR pagamento por hora trabalhada e quanto recebe;
 float maior_pgto = 0;
 string nome_maior_pgto = "";
 
-maior_pgto = lista_pagamentos.Max();
-nome_maior_pgto = lista_nomes[Array.IndexOf(lista_pagamentos, maior_pgto)];
+maior_pgto = l_pagamentos.Max();
+nome_maior_pgto = l_nomes[l_pagamentos.IndexOf(maior_pgto)];
 
 Console.WriteLine("O funcionário com o maior pagamento por hora é: " + nome_maior_pgto + " e recebe " + maior_pgto);
 
 // Parte 2
-/*
- * Agora, identificamos as tarefas da empresa de acordo com o arquivo "tarefas.txt",  no qual os TRIOS de linhas representam, 
- * respectivamente, um NÚMERO IDENTIFICADOR, CUSTO BASE e DURAÇÃO EM HORAS de cada tarefa. 
-*/
 
 string tar_path = "./tarefas.txt";
 string[] tar_info = File.ReadAllLines(tar_path);
 
-Tarefas[] lista_tarefas = new Tarefas[tar_info.Length / 3];
-int[] lista_num_id = new int[tar_info.Length / 3];
-float[] lista_custo = new float[tar_info.Length / 3];
-float[] lista_duracao = new float[tar_info.Length / 3];
+List<Tarefas> l_tarefas = new List<Tarefas>();
+List<int> l_id_tarefa = new List<int>();
+List<float> l_custo_tarefas = new List<float>();
+List<float> l_duracao_tarefas = new List<float>();
 
 for (int i = 0; i < tar_info.Length; i += 3)
 {
     int num_id = int.Parse(tar_info[i]);
     float custo_base = float.Parse(tar_info[i + 1]);
     float duracao_horas = float.Parse(tar_info[i + 2]);
-    Console.WriteLine("ID: " + num_id + " | Custo Base: " + custo_base + " | Duração em horas: " + duracao_horas);
+    l_duracao_tarefas.Add(duracao_horas);
+    l_custo_tarefas.Add(custo_base);
+    l_id_tarefa.Add(num_id);
 
-    lista_tarefas[i / 3] = new Tarefas(num_id, custo_base, duracao_horas);
+    l_tarefas.Add(new Tarefas(num_id, custo_base, duracao_horas));
 }
-/* 
- * Novamente cumprimos os requisitos da atividade, sendo elas:
-*/
 // 1. Qual a SOMA das DURAÇÕES das tarefas?
 
-float soma_duracao = lista_duracao.Sum();
+float soma_duracao = l_duracao_tarefas.Sum();
 Console.WriteLine("A soma das durações das tarefas é: " + soma_duracao);
+
+//2 Qual é o NÚMERO IDENTIFICADOR da tarefa com menor CUSTO BASE? E qual é o custo?
+
+float menor_custo = 0;
+string id_menor_custo = "";
+menor_custo = l_custo_tarefas.Min();
+int index = l_custo_tarefas.IndexOf(menor_custo);
+id_menor_custo = l_id_tarefa[index].ToString();
+Console.WriteLine("O ID da tarefa com menor custo é: " + id_menor_custo + " e o custo é: " + menor_custo);
+
+
+// Parte 3
+
+for (int i = 0; i < l_tarefas.Count; i++)
+{
+    if (i >= l_funcionarios.Count)
+    {
+        i = 0;
+    }
+    l_funcionarios[i].addTarefa(l_tarefas[0]);
+    l_tarefas.RemoveAt(0);
+}
+
+// 1 - Qual o NOME do funcionário que precisará trabalhar MAIS tempo para concluir suas atividades? E quanto tempo será?
+
+List<float> l_tempo_tarefas_individual = new List<float>();
+
+for (int i = 0; i < l_funcionarios.Count; i++)
+{
+    float tempo_total = 0;
+    foreach (Tarefas tarefa in l_funcionarios[i].getTarefas())
+    {
+        tempo_total += tarefa.getDuracao_horas();
+    }
+    l_tempo_tarefas_individual.Add(tempo_total);
+
+}
+
+float maior_tempo = l_tempo_tarefas_individual.Max();
+Console.WriteLine("O funcionário que precisará trabalhar mais tempo é: " + l_funcionarios[l_tempo_tarefas_individual.IndexOf(maior_tempo)].nome + " e precisará trabalhar " + maior_tempo + " horas.");
+
+// 2 - Qual o CUSTO TOTAL para a execução de TODAS as tarefas, considerando o PAGAMENTO por HORA dos funcionários responsáveis e o CUSTO BASE das tarefas? Considere que os funcionários recebem apenas por hora TRABALHADA.
+Console.WriteLine("O custo total para a execução de todas as tarefas é: " + l_funcionarios.Sum(f => f.getCusto_total_individual()));
+
+// Parte 4
+

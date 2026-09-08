@@ -15,5 +15,20 @@ namespace Atividade_01
             custo_base = _custo_base;
             duracao_horas = _duracao_horas;
         }
+
+        public int getNumId()
+        {
+            return num_id;
+        }
+
+        public float getDuracao_horas()
+        {
+            return duracao_horas;
+        }
+
+        public float getCusto_base()
+        {
+            return custo_base;
+        }
     }
 }
