@@ -19,10 +19,10 @@ for (int i = 0; i < func_info.Length; i += 2)
     l_funcionarios.Add(new Funcionarios(nome, pagamento));
 }
 
-// 1.Quantos funcionários tem o estúdio;
+// 1 - Quantos funcionários tem o estúdio;
 Console.WriteLine("Número de funcionários é: " + l_funcionarios.Count);
 
-// 2. Qual é o NOME do funcionário com o MAIOR pagamento por hora trabalhada e quanto recebe;
+// 2 - Qual é o NOME do funcionário com o MAIOR pagamento por hora trabalhada e quanto recebe;
 float maior_pgto = 0;
 string nome_maior_pgto = "";
 
@@ -52,12 +52,12 @@ for (int i = 0; i < tar_info.Length; i += 3)
 
     l_tarefas.Add(new Tarefas(num_id, custo_base, duracao_horas));
 }
-// 1. Qual a SOMA das DURAÇÕES das tarefas?
+// 1 - Qual a SOMA das DURAÇÕES das tarefas?
 
 float soma_duracao = l_duracao_tarefas.Sum();
 Console.WriteLine("A soma das durações das tarefas é: " + soma_duracao);
 
-//2 Qual é o NÚMERO IDENTIFICADOR da tarefa com menor CUSTO BASE? E qual é o custo?
+// 2 - Qual é o NÚMERO IDENTIFICADOR da tarefa com menor CUSTO BASE? E qual é o custo?
 
 float menor_custo = 0;
 string id_menor_custo = "";
@@ -95,10 +95,29 @@ for (int i = 0; i < l_funcionarios.Count; i++)
 }
 
 float maior_tempo = l_tempo_tarefas_individual.Max();
-Console.WriteLine("O funcionário que precisará trabalhar mais tempo é: " + l_funcionarios[l_tempo_tarefas_individual.IndexOf(maior_tempo)].nome + " e precisará trabalhar " + maior_tempo + " horas.");
+Console.WriteLine("O funcionário que precisará trabalhar mais tempo é: " + l_funcionarios[l_tempo_tarefas_individual.IndexOf(maior_tempo)].getNome() + " e precisará trabalhar " + maior_tempo + " horas.");
 
 // 2 - Qual o CUSTO TOTAL para a execução de TODAS as tarefas, considerando o PAGAMENTO por HORA dos funcionários responsáveis e o CUSTO BASE das tarefas? Considere que os funcionários recebem apenas por hora TRABALHADA.
 Console.WriteLine("O custo total para a execução de todas as tarefas é: " + l_funcionarios.Sum(f => f.getCusto_total_individual()));
 
 // Parte 4
 
+// 1 - Quantos DIAS DE TRABALHO serão necessários para CONCLUIR o projeto?
+
+double dias_conclusao_projeto = l_funcionarios.Max(f => f.getDias_conclusao());
+float horas_totais_projeto = (float)(dias_conclusao_projeto * 8);
+
+Console.WriteLine($"O projeto será concluído em {dias_conclusao_projeto} dias.");
+
+Funcionarios func = l_funcionarios.First(f => f.getNome() == "Pedro L.");
+
+// 2 - Qual o NOME do funcionário que ficará MAIS tempo OCIOSO*, sem poder executar tarefas até a CONCLUSÃO do projeto? E por quanto tempo?
+
+double dias_projeto = l_funcionarios.Max(f => f.getDias_conclusao());
+float maior_ociosidade = l_funcionarios.Max(f => f.getTempo_ocioso(dias_projeto));
+string nome_mais_ocioso = l_funcionarios
+    .First(f => f.getTempo_ocioso(dias_projeto) == maior_ociosidade)
+    .getNome();
+
+Console.WriteLine($"Projeto termina em: {dias_projeto} dias ({dias_projeto * 8} horas)");
+Console.WriteLine($"Funcionário mais ocioso: {nome_mais_ocioso} com {maior_ociosidade} horas ociosas");
