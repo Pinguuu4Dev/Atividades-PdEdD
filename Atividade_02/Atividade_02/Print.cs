@@ -28,8 +28,6 @@ namespace Atividade_02
 
         public static void listaInteira<T>(List<T> lista, string titulo)
         {
-            Console.Clear();
-            Console.WriteLine("\x1b[3J");
             Console.WriteLine($"--------------- Lista {titulo} ----------------");
             foreach (T arma in lista) {
                 Console.WriteLine((arma as Armas)?.getValores());
@@ -53,6 +51,11 @@ namespace Atividade_02
             Console.WriteLine(" 2 - Utilizar Quick Sort ");
             Console.WriteLine(" 3 - Utilizar Selection ");
             Console.WriteLine("");
+        }
+
+        public static void finalizado_sort()
+        {
+            Console.WriteLine("Sort concluido");
         }
     }
 }

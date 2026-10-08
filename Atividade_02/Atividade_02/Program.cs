@@ -42,6 +42,9 @@ namespace Atividade_02
                 case 2:
                     Sort.Quick(armas, 0, armas.Count - 1, comparador);
                     break;
+                case 3:
+                    Sort.Selection(armas, comparador);
+                    break;
                 _:
                     Sort.Merge(armas, comparador);
                     break;

@@ -107,7 +107,7 @@ namespace Atividade_02
                 // Encontra elemento maior ou igual ao pivô pela esquerda
                 while (compare(lista[i], pivo))
                     i++;
-                
+
                 // Encontra elemento menor que o pivô pela direita
                 while (compare(pivo, lista[j]))
                     j--;
@@ -126,6 +126,30 @@ namespace Atividade_02
                 Quick(lista, inicio, j, compare);
             if (i < fim)
                 Quick(lista, i, fim, compare);
+        }
+
+        public static void Selection<T>(List <T> lista, Func<T, T, bool> compare)
+        {
+            for (int i = 0; i < lista.Count - 1; i++)
+            {
+                // Primeiro selecionamos o menor ou maior valor usando a função de comparação
+                int selected = i;
+                for (int j = i + 1; j < lista.Count; j++)
+                {
+                    if (compare(lista[j], lista[selected]))
+                    {
+                        selected = j;
+                    }
+                }
+
+                // Por fim, fazemos a troca, para que o valor vá para a posição adequada.
+                Swap(lista, i, selected);
+            }
+        }
+
+        public static void Selection<T>(List <T> lista) where T : IComparable
+        {
+            Selection(lista, (a, b) => a.CompareTo(b) < 0);
         }
     }
 }
