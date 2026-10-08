@@ -30,13 +30,6 @@ namespace Atividade_02
             for (int i = 0; i < metadeLista; i++)
             {
                 listaEsq.Insert(i, lista[i]); // Coloca o elemento da lista na lista esquerda.
-                /*
-                 * if (i == 0) { 
-                    Print.inicio("esquerda"); 
-                    Print.elemento($"{(listaEsq[i] as Armas)?.getValores()}"); 
-                }
-                else { Print.elemento($"{(listaEsq[i] as Armas)?.getValores()}"); }
-                */
             }
             Print.fim();
 
@@ -44,13 +37,6 @@ namespace Atividade_02
             for (int i = 0; i < lista.Count - metadeLista; i++)
             {
                 listaDir.Insert(i, lista[i + metadeLista]); // Coloca o elemento da lista na lista direita.
-                /*
-                 * if (i == 0) { 
-                    Print.inicio("direita"); 
-                    Print.elemento($"{(listaDir[i] as Armas)?.getValores()}"); 
-                }
-                else { Print.elemento($"{(listaDir[i] as Armas)?.getValores()}"); }
-                */
             }
             Print.fim();
 
@@ -88,17 +74,18 @@ namespace Atividade_02
 
         public static void Quick<T>(List<T> lista, int inicio, int fim, Func<T, T, bool> compare)
         {
-            // Base case: lista com 1 ou 0 elementos já está ordenada
-            if (inicio >= fim)  // ← MUDE AQUI
+            // Mesma lógica do Merge Sort, onde quando uma lista tiver apenas 1 elemento, irémos parar de ordernar.
+            if (inicio >= fim)
             {
                 return;
             }
 
-            // Pega o pivô (elemento do meio)
-            int meio = (inicio + fim) / 2;
+            // O pivô é selecionado através do cálculo inicio + fim / 2, pois daí irémos levar em consideração a diferença entre posição
+            // dos elementos de um array comparado com o tamanho do array.
+            int meio = (inicio + fim) / 2; 
             T pivo = lista[meio];
 
-            // Particiona a lista
+            // Cria um valor para mantermos a organização de qual elemento de cada lado da lista estamos verificando.
             int i = inicio;
             int j = fim;
 
@@ -112,7 +99,7 @@ namespace Atividade_02
                 while (compare(pivo, lista[j]))
                     j--;
 
-                // Se encontrou dois elementos fora de ordem, troca
+                // Se encontrou dois elementos fora de ordem, troca eles de lugar com a função Swap
                 if (i <= j)
                 {
                     Swap(lista, i, j);
@@ -121,7 +108,8 @@ namespace Atividade_02
                 }
             }
 
-            // Recursão nas sublistas
+            // Depois de fazer o Sort, verifica se os elementos iniciais (i e j) estão na posição correta, e faz com que começemos o Quick
+            // Sort em uma posição diferente.
             if (inicio < j)
                 Quick(lista, inicio, j, compare);
             if (i < fim)
@@ -142,7 +130,8 @@ namespace Atividade_02
                     }
                 }
 
-                // Por fim, fazemos a troca, para que o valor vá para a posição adequada.
+                // Depois, apenas fazendo a troca dos elementos, até "empurrarmos" todos os elementos menores do valor selecionado
+                // para a esquerda.
                 Swap(lista, i, selected);
             }
         }
