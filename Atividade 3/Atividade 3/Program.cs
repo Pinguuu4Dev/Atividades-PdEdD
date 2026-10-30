@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Atividade_3;
 
-/* 
- *  -----------------------------------------------------------------
- * |     Inicio na página inicial (Home).                            |
- * |    Caractere numérico (0-9) = subcategoria da página atual      |
- * |    'b' = categoria anterior                                     |
- *  -----------------------------------------------------------------
- * Algo na lógica de usar o Dictionary seria ter o nome da página e aonde o index 
- * correspondete leva, tipo o que já tava sendo feito
-                    |   |   |
-                    V   V   V
-                   { "Home", 0 }, 
-                   { "Monster", 1 }, 
-                   { "Boss", 2 },
-*/
+const string WikiFile = "wiki.txt";
+const string LogFile = "log.txt";
+
+if (!File.Exists(WikiFile) || !File.Exists(LogFile))
+{
+    Console.WriteLine($"Os arquivos {WikiFile} e {LogFile} devem estar no diretório da aplicação.");
+    return;
+}
+
+var pages = PageManager.CreateWiki(WikiFile);
