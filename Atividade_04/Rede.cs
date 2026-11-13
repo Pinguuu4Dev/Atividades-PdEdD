@@ -59,7 +59,7 @@ namespace Atividade_04
             int numSeguindoDeVolta = 0;
             foreach (User u in comparador.Seguidores)
             {
-                if (u.Seguindo.Contains(comparador))
+                if (u.Seguidores.Contains(comparador))
                 {
                     numSeguindoDeVolta++;
                 }
