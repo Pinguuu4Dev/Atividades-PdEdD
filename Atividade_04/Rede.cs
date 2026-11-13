@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Atividade_04
 {
-    internal class Rede
+    internal static class Rede
     {
         public static List<User>? users = new List<User>();
         public static int indiceUsuarios = 0;
@@ -14,11 +14,6 @@ namespace Atividade_04
 
         public static void AdicionarUsuario(User user)
         {
-            if (users == null)
-            {
-                users = new List<User>();
-            }
-
             users?.Add(user);
             IncrementarIndice();
         }
@@ -32,43 +27,45 @@ namespace Atividade_04
                 throw new InvalidDataException($"Não existem usuários para seguir."); 
             }
         }
-        public static int numeroContas() => users.Count;
+        public static void NumeroContas() {
+            int contasNaRede = users.Count;
+            Console.WriteLine($"\nNossa rede social tem {contasNaRede} usuários e contando!"); ;
+        }
 
         public static void IncrementarIndice() => indiceUsuarios++;
 
-        public static User contaMaisSeguidores()
+        public static User ContaMaisSeguidores()
         {
-            User conta = new User("Ninguém");
+            User maiorConta = new User("Ninguém"); // <- Conta fictícia para comparação   
 
             if (users == null || users.Count == 0)
             {
-                return conta;
+                return maiorConta;
             }
 
             foreach (User u in users)
             {
-                if (u.NumSeguidores() >= conta.NumSeguidores())
+                if (u.NumSeguidores() >= maiorConta.NumSeguidores())
                 {
-                    conta = u;
+                    maiorConta = u;
                 }
             }
 
-            return conta;
+            Console.WriteLine($"Conta com maior número de seguidores ({maiorConta.NumSeguidores()}): {maiorConta.Nome}.");
+            return maiorConta;
         }
-
-        public static int seguindoDeVolta(User conta)
+        public static void SeguindoDeVolta(User comparador)
         {
-            int seguidasDeVolta = 0;
-
-            foreach (User u in conta.Seguidores)
+            int numSeguindoDeVolta = 0;
+            foreach (User u in comparador.Seguidores)
             {
-                if (u.Seguidores.Contains(conta))
+                if (u.Seguindo.Contains(comparador))
                 {
-                    seguidasDeVolta++;
+                    numSeguindoDeVolta++;
                 }
             }
 
-            return seguidasDeVolta;
+            Console.WriteLine($"Contas seguidas de volta pela maior conta na rede: {numSeguindoDeVolta}.");
         }
     }
 }

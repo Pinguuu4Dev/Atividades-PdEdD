@@ -11,17 +11,13 @@ namespace Atividade_04
         public string Nome { get; set; }
 
         public int Indice {get; set;}
-        public List<User> Seguidores { get; set; } // <- Contas que seguem o usuário
-        public List<User> Seguindo { get; set; } // <- Contas que o usuário segue
+        public List<User> Seguidores = new List<User>(0); // <- Contas que seguem o usuário
+        public List<User> Seguindo = new List<User>(0); // <- Contas que o usuário segue
 
         public User(string nome)
         {
             Nome = nome;
             Indice = Rede.indiceUsuarios;
-            if (Seguidores == null && Seguindo == null) {
-                Seguidores = new List<User>();
-                Seguindo = new List<User>();
-            }
             Rede.AdicionarUsuario(this);
         }
 

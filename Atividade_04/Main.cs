@@ -1,20 +1,35 @@
 ﻿using Atividade_04;
 
-string userLog = File.ReadAllText("log.txt");
+string[] lines = File.ReadAllLines("log.txt");
 
-User maiorConta = Rede.contaMaisSeguidores();
-int contasNaRede = Rede.numeroContas();
+foreach (string line in lines)
+{
+    string[] parts = line.Split(' ');
+    string command = parts[0];
 
-User user1 = new User("Igor");
-User user2 = new User("Ricka");
-User user3 = new User("Enzo");
+    switch (command)
+    {
+        case "account":
+            string userName = line.Substring("account ".Length).Replace(".", "");
+            new User(userName);
+            break;
 
-user2.Follow(0);
-user1.Follow(1);
-user3.Follow(1);
+        case "follow":
+            int followerIndex = int.Parse(parts[1]);
+            int followingIndex = int.Parse(parts[2]);
+            Rede.ProcurarPorIndice(followerIndex).Follow(followingIndex);
+            break;
 
-Console.WriteLine($"Nossa rede social tem {contasNaRede} usuários e contando!");
-Console.WriteLine($"Conta com maior número de seguidores ({maiorConta.NumSeguidores()}): {maiorConta.Nome} ");
-Console.WriteLine($"Contas seguidas de volta pela maior conta na rede: {Rede.seguindoDeVolta(maiorConta)}");
+        case "unfollow":
+            int unfollowerIndex = int.Parse(parts[1]);
+            int unfollowingIndex = int.Parse(parts[2]);
+            Rede.ProcurarPorIndice(unfollowerIndex).Unfollow(unfollowingIndex);
+            break;
+    }
+}
 
-// Basta criarmos a string do log para criarmos os usuários de acordo com o .txt do professor
+Console.WriteLine("\n=== Resumo da Rede Social ===");
+Rede.NumeroContas();
+User maiorConta = Rede.ContaMaisSeguidores();
+Rede.SeguindoDeVolta(maiorConta);
+Console.ReadLine();
